@@ -8,6 +8,7 @@
       content="Guide to getting started with stacked pull requests using gh stack."
     />
     <title>Stacked Pull Requests · Premium CLI Guide</title>
+    <link rel="icon" href="images/favicon.svg" type="image/svg+xml" />
     <script>
       (function () {
         var segments = location.pathname.split("/").filter(Boolean);
@@ -202,7 +203,16 @@ git commit -m "Add authentication API"</code></pre>
             </div>
             <p>Implement the UI and commit those changes as well.</p>
             <div class="note">
-              <p class="note__title">Tip</p>
+              <div class="callout__header">
+                <span class="callout__icon callout__icon--tip" aria-hidden="true">
+                  <svg viewBox="0 0 16 16" width="20" height="20" fill="currentColor">
+                    <path
+                      d="M8 1.5c-2.363 0-4 1.725-4 4.25 0 .862.285 1.659.766 2.3.058.068.12.136.188.203a.749.749 0 0 1 .12.241v.028c.003.066.018.133.043.196l.823 2.051a.749.749 0 0 1-.585.895 3.5 3.5 0 0 0-.885.675C4.356 12.688 4 13.328 4 14v.25a.75.75 0 0 0 .75.75h6.5a.75.75 0 0 0 .75-.75V14c0-.672-.356-1.312-.98-1.75a3.493 3.493 0 0 0-.885-.675.749.749 0 0 1-.585-.895l.823-2.051a.749.749 0 0 1 .043-.196V8.478a.749.749 0 0 1 .12-.241c.068-.067.13-.135.188-.203A4.001 4.001 0 0 0 8 1.5ZM6.5 14v.25h3V14a1.5 1.5 0 0 0-1.5-1.5h-3A1.5 1.5 0 0 0 6.5 14Z"
+                    />
+                  </svg>
+                </span>
+                <p class="note__title">Tip</p>
+              </div>
               <p>
                 Create each new layer from the top of the current stack so it depends on the
                 previous layer.

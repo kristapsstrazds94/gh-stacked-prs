@@ -521,6 +521,10 @@ a:hover {
   color: var(--warn);
 }
 
+.callout__icon--tip {
+  color: var(--brand-strong);
+}
+
 .note__title,
 .warning__title {
   margin: 0;
