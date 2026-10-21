@@ -1,113 +1,108 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 420" role="img" aria-labelledby="flow-title">
   <title id="flow-title">Branch flowchart for stacked pull requests</title>
-  <defs>
-    <marker id="arrow-purple" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
-      <path d="M0,0 L10,5 L0,10 Z" fill="#8250df"/>
-    </marker>
-    <marker id="arrow-blue" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
-      <path d="M0,0 L10,5 L0,10 Z" fill="#0969da"/>
-    </marker>
-    <marker id="arrow-gray-down" markerWidth="10" markerHeight="10" refX="5" refY="9" orient="auto">
-      <path d="M0,0 L5,10 L10,0 Z" fill="#656d76"/>
-    </marker>
-    <marker id="arrow-green-down" markerWidth="10" markerHeight="10" refX="5" refY="9" orient="auto">
-      <path d="M0,0 L5,10 L10,0 Z" fill="#1a7f37"/>
-    </marker>
-    <style>
-      .title-bar { fill: #0969da; }
-      .title-text { fill: #ffffff; font: 700 18px "IBM Plex Sans", system-ui, sans-serif; }
-      .box-main { fill: #fbefff; stroke: #8250df; stroke-width: 2; }
-      .box-feature { fill: #eef6ff; stroke: #0969da; stroke-width: 2; }
-      .box-pr { fill: #ffebe9; stroke: #cf222e; stroke-width: 2; }
-      .box-merge { fill: #dafbe1; stroke: #1a7f37; stroke-width: 2; }
-      .label { fill: #1f2328; font: 600 13px "IBM Plex Sans", system-ui, sans-serif; }
-      .sublabel { fill: #57606a; font: 400 11px "IBM Plex Sans", system-ui, sans-serif; }
-      .arrow-label { fill: #57606a; font: 500 10px "IBM Plex Sans", system-ui, sans-serif; }
-      .timeline { stroke: #8250df; stroke-width: 3; fill: none; }
-      .arrow-purple { stroke: #8250df; stroke-width: 2; fill: none; marker-end: url(#arrow-purple); }
-      .arrow-blue { stroke: #0969da; stroke-width: 2; fill: none; marker-end: url(#arrow-blue); }
-      .arrow-gray-down { stroke: #656d76; stroke-width: 2; fill: none; marker-end: url(#arrow-gray-down); }
-      .arrow-green-down { stroke: #1a7f37; stroke-width: 2; fill: none; marker-end: url(#arrow-green-down); }
-    </style>
-  </defs>
+  <style>
+    .title-bar { fill: #0969da; }
+    .title-text { fill: #ffffff; font: 700 18px "IBM Plex Sans", system-ui, sans-serif; }
+    .box-main { fill: #fbefff; stroke: #8250df; stroke-width: 2; }
+    .box-feature { fill: #eef6ff; stroke: #0969da; stroke-width: 2; }
+    .box-pr { fill: #ffebe9; stroke: #cf222e; stroke-width: 2; }
+    .box-merge { fill: #dafbe1; stroke: #1a7f37; stroke-width: 2; }
+    .label { fill: #1f2328; font: 600 13px "IBM Plex Sans", system-ui, sans-serif; }
+    .sublabel { fill: #57606a; font: 400 11px "IBM Plex Sans", system-ui, sans-serif; }
+    .arrow-label { fill: #57606a; font: 500 10px "IBM Plex Sans", system-ui, sans-serif; }
+    .shaft-purple { stroke: #8250df; stroke-width: 2; fill: none; }
+    .shaft-blue { stroke: #0969da; stroke-width: 2; fill: none; }
+    .shaft-gray { stroke: #656d76; stroke-width: 2; fill: none; }
+    .shaft-green { stroke: #1a7f37; stroke-width: 2; fill: none; }
+    .head-purple { fill: #8250df; }
+    .head-blue { fill: #0969da; }
+    .head-gray { fill: #656d76; }
+    .head-green { fill: #1a7f37; }
+    .timeline { stroke: #8250df; stroke-width: 3; fill: none; }
+  </style>
 
   <rect width="1280" height="420" fill="#f6f8fa"/>
   <rect class="title-bar" x="0" y="0" width="1280" height="44"/>
   <text class="title-text" x="24" y="29">Branch flowchart for stacked pull requests</text>
-
-  <!-- Layout constants: feature bottom 130, PR 158-206, merge 234-274, timeline y=350 -->
 
   <!-- Top branch row -->
   <rect class="box-main" x="24" y="68" width="150" height="52" rx="8"/>
   <text class="label" x="99" y="92" text-anchor="middle">main</text>
   <text class="sublabel" x="99" y="108" text-anchor="middle">(production)</text>
 
-  <line class="arrow-purple" x1="176" y1="94" x2="226" y2="94"/>
+  <line class="shaft-purple" x1="176" y1="94" x2="214" y2="94"/>
+  <polygon class="head-purple" points="226,94 214,89 214,99"/>
   <text class="arrow-label" x="201" y="82" text-anchor="middle">Create branch</text>
 
   <rect class="box-feature" x="228" y="58" width="200" height="72" rx="8"/>
   <text class="label" x="328" y="84" text-anchor="middle">feature/auth</text>
   <text class="sublabel" x="328" y="102" text-anchor="middle">Base layer / foundation</text>
 
-  <line class="arrow-blue" x1="430" y1="94" x2="480" y2="94"/>
+  <line class="shaft-blue" x1="430" y1="94" x2="468" y2="94"/>
+  <polygon class="head-blue" points="480,94 468,89 468,99"/>
   <text class="arrow-label" x="455" y="82" text-anchor="middle">Stack next</text>
 
   <rect class="box-feature" x="482" y="58" width="220" height="72" rx="8"/>
   <text class="label" x="592" y="84" text-anchor="middle">feature/auth-api</text>
   <text class="sublabel" x="592" y="102" text-anchor="middle">API on top of auth</text>
 
-  <line class="arrow-blue" x1="704" y1="94" x2="754" y2="94"/>
+  <line class="shaft-blue" x1="704" y1="94" x2="742" y2="94"/>
+  <polygon class="head-blue" points="754,94 742,89 742,99"/>
   <text class="arrow-label" x="729" y="82" text-anchor="middle">Stack next</text>
 
   <rect class="box-feature" x="756" y="58" width="210" height="72" rx="8"/>
   <text class="label" x="861" y="84" text-anchor="middle">feature/auth-ui</text>
   <text class="sublabel" x="861" y="102" text-anchor="middle">UI on top of API</text>
 
-  <!-- Column stacks: feature -> PR -> merge -> main timeline -->
-  <g id="col-auth">
-    <line class="arrow-gray-down" x1="328" y1="130" x2="328" y2="156"/>
-    <rect class="box-pr" x="248" y="158" width="160" height="48" rx="8"/>
-    <text class="label" x="328" y="180" text-anchor="middle">PR #1</text>
-    <text class="sublabel" x="328" y="196" text-anchor="middle">Auth foundation</text>
-    <line class="arrow-gray-down" x1="328" y1="206" x2="328" y2="232"/>
-    <rect class="box-merge" x="248" y="234" width="160" height="40" rx="8"/>
-    <text class="label" x="328" y="259" text-anchor="middle">Merge into main</text>
-  </g>
+  <!-- Column 1 -->
+  <line class="shaft-gray" x1="328" y1="130" x2="328" y2="144"/>
+  <polygon class="head-gray" points="328,156 323,144 333,144"/>
+  <rect class="box-pr" x="248" y="158" width="160" height="48" rx="8"/>
+  <text class="label" x="328" y="180" text-anchor="middle">PR #1</text>
+  <text class="sublabel" x="328" y="196" text-anchor="middle">Auth foundation</text>
 
-  <g id="col-auth-api">
-    <line class="arrow-gray-down" x1="592" y1="130" x2="592" y2="156"/>
-    <rect class="box-pr" x="512" y="158" width="160" height="48" rx="8"/>
-    <text class="label" x="592" y="180" text-anchor="middle">PR #2</text>
-    <text class="sublabel" x="592" y="196" text-anchor="middle">Auth API</text>
-    <line class="arrow-gray-down" x1="592" y1="206" x2="592" y2="232"/>
-    <rect class="box-merge" x="512" y="234" width="160" height="40" rx="8"/>
-    <text class="label" x="592" y="259" text-anchor="middle">Merge when #1 lands</text>
-  </g>
+  <line class="shaft-gray" x1="328" y1="206" x2="328" y2="220"/>
+  <polygon class="head-gray" points="328,232 323,220 333,220"/>
+  <rect class="box-merge" x="248" y="234" width="160" height="40" rx="8"/>
+  <text class="label" x="328" y="259" text-anchor="middle">Merge into main</text>
 
-  <g id="col-auth-ui">
-    <line class="arrow-gray-down" x1="861" y1="130" x2="861" y2="156"/>
-    <rect class="box-pr" x="781" y="158" width="160" height="48" rx="8"/>
-    <text class="label" x="861" y="180" text-anchor="middle">PR #3</text>
-    <text class="sublabel" x="861" y="196" text-anchor="middle">Auth UI</text>
-    <line class="arrow-gray-down" x1="861" y1="206" x2="861" y2="232"/>
-    <rect class="box-merge" x="781" y="234" width="160" height="40" rx="8"/>
-    <text class="label" x="861" y="259" text-anchor="middle">Merge when #2 lands</text>
-  </g>
+  <!-- Column 2 -->
+  <line class="shaft-gray" x1="592" y1="130" x2="592" y2="144"/>
+  <polygon class="head-gray" points="592,156 587,144 597,144"/>
+  <rect class="box-pr" x="512" y="158" width="160" height="48" rx="8"/>
+  <text class="label" x="592" y="180" text-anchor="middle">PR #2</text>
+  <text class="sublabel" x="592" y="196" text-anchor="middle">Auth API</text>
 
-  <!-- Main production timeline -->
+  <line class="shaft-gray" x1="592" y1="206" x2="592" y2="220"/>
+  <polygon class="head-gray" points="592,232 587,220 597,220"/>
+  <rect class="box-merge" x="512" y="234" width="160" height="40" rx="8"/>
+  <text class="label" x="592" y="259" text-anchor="middle">Merge when #1 lands</text>
+
+  <!-- Column 3 -->
+  <line class="shaft-gray" x1="861" y1="130" x2="861" y2="144"/>
+  <polygon class="head-gray" points="861,156 856,144 866,144"/>
+  <rect class="box-pr" x="781" y="158" width="160" height="48" rx="8"/>
+  <text class="label" x="861" y="180" text-anchor="middle">PR #3</text>
+  <text class="sublabel" x="861" y="196" text-anchor="middle">Auth UI</text>
+
+  <line class="shaft-gray" x1="861" y1="206" x2="861" y2="220"/>
+  <polygon class="head-gray" points="861,232 856,220 866,220"/>
+  <rect class="box-merge" x="781" y="234" width="160" height="40" rx="8"/>
+  <text class="label" x="861" y="259" text-anchor="middle">Merge when #2 lands</text>
+
+  <!-- Main timeline -->
   <line class="timeline" x1="24" y1="350" x2="1256" y2="350"/>
   <rect class="box-main" x="24" y="324" width="150" height="52" rx="8"/>
   <text class="label" x="99" y="348" text-anchor="middle">main</text>
   <text class="sublabel" x="99" y="364" text-anchor="middle">(production)</text>
 
-  <!-- Merge into main (green arrows land on the timeline) -->
-  <line class="arrow-green-down" x1="328" y1="274" x2="328" y2="350"/>
-  <line class="arrow-green-down" x1="592" y1="274" x2="592" y2="350"/>
-  <line class="arrow-green-down" x1="861" y1="274" x2="861" y2="350"/>
-
-  <circle cx="328" cy="350" r="4" fill="#8250df"/>
-  <circle cx="592" cy="350" r="4" fill="#8250df"/>
-  <circle cx="861" cy="350" r="4" fill="#8250df"/>
+  <!-- Merge into main -->
+  <line class="shaft-green" x1="328" y1="274" x2="328" y2="336"/>
+  <polygon class="head-green" points="328,350 323,336 333,336"/>
+  <line class="shaft-green" x1="592" y1="274" x2="592" y2="336"/>
+  <polygon class="head-green" points="592,350 587,336 597,336"/>
+  <line class="shaft-green" x1="861" y1="274" x2="861" y2="336"/>
+  <polygon class="head-green" points="861,350 856,336 866,336"/>
 
   <text class="sublabel" x="640" y="392" text-anchor="middle">Merge from the bottom of the stack upward (PR #1, then #2, then #3)</text>
 </svg>
