@@ -8,6 +8,16 @@
       content="Guide to getting started with stacked pull requests using gh stack."
     />
     <title>Stacked Pull Requests · Premium CLI Guide</title>
+    <script>
+      (function () {
+        var segments = location.pathname.split("/").filter(Boolean);
+        var href =
+          location.hostname.endsWith("github.io") && segments[0]
+            ? location.origin + "/" + segments[0] + "/"
+            : new URL("./", location.href).href;
+        document.write('<base href="' + href + '">');
+      })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
