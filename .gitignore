@@ -1,0 +1,29 @@
+# IDE and editor
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Dependencies and build output (if you add a bundler later)
+node_modules/
+dist/
+_site/
+.cache/
+.parcel-cache/
+.vite/
+
+# Logs and env
+*.log
+npm-debug.log*
+.env
+.env.*
+
+# Local tooling
+*.local

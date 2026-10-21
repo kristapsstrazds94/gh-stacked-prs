@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Guide to getting started with stacked pull requests using gh stack."
+    />
+    <title>Stacked Pull Requests · Premium CLI Guide</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/guide.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="site-header__brand">
+        <svg height="24" viewBox="0 0 16 16" width="24" aria-hidden="true" fill="currentColor">
+          <path
+            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.18.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.51-1.04 2.18-.82 2.18-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
+          />
+        </svg>
+        Stacked Pull Requests
+      </div>
+      <span class="site-header__tag">Open guide</span>
+      <button type="button" class="menu-toggle" aria-expanded="false" aria-controls="sidebar">
+        Contents
+      </button>
+    </header>
+
+    <div class="scroll-progress" aria-hidden="true">
+      <span class="scroll-progress__bar"></span>
+    </div>
+
+    <div class="sidebar-backdrop" aria-hidden="true"></div>
+
+    <div class="layout">
+      <aside id="sidebar" class="sidebar" aria-label="Table of contents">
+        <p class="sidebar__title">In this guide</p>
+        <nav class="toc-nav" aria-label="Guide steps">
+          <ol class="toc-list">
+            <li class="toc-item"><a href="#install-and-verify">Install and verify</a></li>
+            <li class="toc-item"><a href="#initialize-stack">Initialize your stack</a></li>
+            <li class="toc-item"><a href="#first-layer">Work on the first layer</a></li>
+            <li class="toc-item"><a href="#add-branch">Add another branch</a></li>
+            <li class="toc-item"><a href="#push-submit">Push and submit PRs</a></li>
+            <li class="toc-item"><a href="#view-navigate">View and navigate</a></li>
+            <li class="toc-item"><a href="#update-layer">Update an earlier layer</a></li>
+            <li class="toc-item"><a href="#branch-flow">Example branch flow</a></li>
+            <li class="toc-item"><a href="#merge-sync">Merge and sync</a></li>
+            <li class="toc-item toc-item--appendix"><a href="#best-practices">Best practices</a></li>
+          </ol>
+        </nav>
+      </aside>
+
+      <main class="content">
+        <article class="content__inner">
+          <header class="page-hero">
+            <h1 class="page-hero__title">Getting started with stacked PRs</h1>
+            <p class="page-hero__kicker">
+              Use <code>gh stack</code> from your terminal to manage dependent branches.
+            </p>
+            <p class="lead">
+              Split work into smaller, reviewable pull requests and keep each layer in your stack
+              aligned - without juggling oversized diffs.
+            </p>
+            <figure class="stack-figure">
+              <figcaption class="stack-figure__label">Example stack</figcaption>
+              <pre class="stack-preview"><code>main
+└─ feature/auth
+   └─ feature/auth-api
+      └─ feature/auth-ui</code></pre>
+            </figure>
+          </header>
+
+          <div class="warning">
+            <div class="callout__header">
+              <span class="callout__icon callout__icon--warning" aria-hidden="true">
+                <svg viewBox="0 0 16 16" width="20" height="20" fill="currentColor">
+                  <path
+                    d="M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.424c.659 1.234-.213 2.779-1.542 2.779H1.917c-1.329 0-2.2-1.545-1.542-2.779L6.457 1.047zM8 4.75a.75.75 0 0 0-.75.75v3.5a.75.75 0 0 0 1.5 0v-3.5A.75.75 0 0 0 8 4.75zm0 8a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"
+                  />
+                </svg>
+              </span>
+              <p class="warning__title">Important to know</p>
+            </div>
+            <p>
+              <code>gh stack</code> is not a built-in GitHub CLI command. The commands below assume
+              your team has installed a compatible <code>gh stack</code> extension. Verify its
+              actual command syntax with <code>gh stack --help</code> before using it. The
+              extension-install command and subcommands can vary by implementation.
+            </p>
+          </div>
+
+          <section class="guide-section" id="install-and-verify">
+            <h2>
+              <span class="step-marker" aria-hidden="true">1</span>
+              <span class="step-title">Install and verify the tooling</span>
+            </h2>
+            <p>Make sure GitHub CLI (<code>gh</code>) is installed and authenticated:</p>
+            <div class="code-block">
+              <div class="code-block__label">
+                <span>Terminal</span>
+                <button type="button" class="code-block__copy">Copy</button>
+              </div>
+              <pre><code>gh --version
+gh auth status</code></pre>
+            </div>
+            <p>
+              If your team uses an extension that provides <code>gh stack</code>, install it using
+              that extension's documented installation instructions. Then verify:
+            </p>
+            <div class="code-block">
+              <div class="code-block__label">
+                <span>Terminal</span>
+                <button type="button" class="code-block__copy">Copy</button>
+              </div>
+              <pre><code>gh stack --help</code></pre>
+            </div>
+          </section>
+
+          <section class="guide-section" id="initialize-stack">
+            <h2>
+              <span class="step-marker" aria-hidden="true">2</span>
+              <span class="step-title">Initialize your first stack</span>
+            </h2>
+            <p>Start from the trunk branch (usually <code>main</code>):</p>
+            <div class="code-block">
+              <div class="code-block__label">
+                <span>Terminal</span>
+                <button type="button" class="code-block__copy">Copy</button>
+              </div>
+              <pre><code>git switch main
+git pull origin main
+gh stack init feature/auth</code></pre>
+            </div>
+            <p>
+              This example assumes your installed stack extension supports
+              <code>gh stack init &lt;branch-name&gt;</code>.
+            </p>
+          </section>
+
+          <section class="guide-section" id="first-layer">
+            <h2>
+              <span class="step-marker" aria-hidden="true">3</span>
+              <span class="step-title">Work on the first layer</span>
+            </h2>
+            <p>Implement the authentication logic, then commit your changes:</p>
+            <div class="code-block">
+              <div class="code-block__label">
+                <span>Terminal</span>
+                <button type="button" class="code-block__copy">Copy</button>
+              </div>
+              <pre><code>git add .
+git commit -m "Add authentication logic"</code></pre>
+            </div>
+          </section>
+
+          <section class="guide-section" id="add-branch">
+            <h2>
+              <span class="step-marker" aria-hidden="true">4</span>
+              <span class="step-title">Add another branch on top</span>
+            </h2>
+            <p>Create the next layer in the stack:</p>
+            <div class="code-block">
+              <div class="code-block__label">
+                <span>Terminal</span>
+                <button type="button" class="code-block__copy">Copy</button>
+              </div>
+              <pre><code>gh stack add feature/auth-api</code></pre>
+            </div>
+            <p>Implement the API changes and commit:</p>
+            <div class="code-block">
+              <div class="code-block__label">
+                <span>Terminal</span>
+                <button type="button" class="code-block__copy">Copy</button>
+              </div>
+              <pre><code>git add .
+git commit -m "Add authentication API"</code></pre>
+            </div>
+            <p>You can add another layer for the UI:</p>
+            <div class="code-block">
+              <div class="code-block__label">
+                <span>Terminal</span>
+                <button type="button" class="code-block__copy">Copy</button>
+              </div>
+              <pre><code>gh stack add feature/auth-ui</code></pre>
+            </div>
+            <p>Implement the UI and commit those changes as well.</p>
+            <div class="note">
+              <p class="note__title">Tip</p>
+              <p>
+                Create each new layer from the top of the current stack so it depends on the
+                previous layer.
+              </p>
+            </div>
+          </section>
+
+          <section class="guide-section" id="push-submit">
+            <h2>
+              <span class="step-marker" aria-hidden="true">5</span>
+              <span class="step-title">Push the stack and create or update PRs</span>
+            </h2>
+            <p>
+              When your changes are ready, use the submit command supported by your extension. For
+              extensions that support it, that may look like:
+            </p>
+            <div class="code-block">
+              <div class="code-block__label">
+                <span>Terminal</span>
+                <button type="button" class="code-block__copy">Copy</button>
+              </div>
+              <pre><code>gh stack submit</code></pre>
+            </div>
+            <p>
+              Confirm the command's behavior with <code>gh stack submit --help</code> before running
+              it, especially in repositories with existing PRs.
+            </p>
+          </section>
+
+          <section class="guide-section" id="view-navigate">
+            <h2>
+              <span class="step-marker" aria-hidden="true">6</span>
+              <span class="step-title">View and navigate the stack</span>
+            </h2>
+            <p>Some stack extensions provide navigation commands such as:</p>
+            <div class="code-block">
+              <div class="code-block__label">
+                <span>Terminal</span>
+                <button type="button" class="code-block__copy">Copy</button>
+              </div>
+              <pre><code>gh stack view
+gh stack bottom
+gh stack top
+gh stack up
+gh stack down</code></pre>
+            </div>
+            <p>
+              Check <code>gh stack --help</code> for the exact commands supported by your installed
+              extension.
+            </p>
+          </section>
+
+          <section class="guide-section" id="update-layer">
+            <h2>
+              <span class="step-marker" aria-hidden="true">7</span>
+              <span class="step-title">Update an earlier layer</span>
+            </h2>
+            <p>
+              If you need to change an earlier PR, switch to that branch, make the change, and commit
+              it:
+            </p>
+            <div class="code-block">
+              <div class="code-block__label">
+                <span>Terminal</span>
+                <button type="button" class="code-block__copy">Copy</button>
+              </div>
+              <pre><code># Example only: use the navigation command supported by your extension
+gh stack bottom
+
+# Make the required changes, then:
+git add .
+git commit -m "Fix authentication logic"</code></pre>
+            </div>
+            <p>
+              Then use your extension's documented rebase/push workflow to update dependent branches.
+              Some extensions provide commands such as:
+            </p>
+            <div class="code-block">
+              <div class="code-block__label">
+                <span>Terminal</span>
+                <button type="button" class="code-block__copy">Copy</button>
+              </div>
+              <pre><code>gh stack rebase
+gh stack push</code></pre>
+            </div>
+            <p>
+              Check the extension's help first; do not assume these commands exist in every
+              implementation.
+            </p>
+          </section>
+
+          <section class="guide-section" id="branch-flow">
+            <h2>
+              <span class="step-marker" aria-hidden="true">8</span>
+              <span class="step-title">Example branch flow</span>
+            </h2>
+            <p>
+              Each layer stacks on the previous branch. You open PRs per layer and merge from the
+              bottom of the stack upward into <code>main</code>.
+            </p>
+            <figure class="guide-figure guide-figure--expandable">
+              <button type="button" class="guide-figure__trigger" aria-label="Expand flowchart">
+                <img
+                  src="images/stacked-pr-flowchart.svg"
+                  alt="Flowchart showing stacked feature branches, pull requests, and merges into main from bottom to top"
+                  width="1280"
+                  height="420"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span class="guide-figure__hint">Click to enlarge</span>
+              </button>
+              <figcaption>
+                Branch flowchart for stacked pull requests: create branches in sequence, open PRs
+                per layer, merge upward into main.
+              </figcaption>
+            </figure>
+            <div class="code-block">
+              <div class="code-block__label">
+                <span>Branch tree</span>
+                <button type="button" class="code-block__copy">Copy</button>
+              </div>
+              <pre><code>main
+└── feature/auth
+    └── feature/auth-api
+        └── feature/auth-ui</code></pre>
+            </div>
+            <p>The PR targets typically look like this:</p>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col">PR</th>
+                    <th scope="col">Head branch</th>
+                    <th scope="col">Base branch</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>PR #1</td>
+                    <td><code>feature/auth</code></td>
+                    <td><code>main</code></td>
+                  </tr>
+                  <tr>
+                    <td>PR #2</td>
+                    <td><code>feature/auth-api</code></td>
+                    <td><code>feature/auth</code></td>
+                  </tr>
+                  <tr>
+                    <td>PR #3</td>
+                    <td><code>feature/auth-ui</code></td>
+                    <td><code>feature/auth-api</code></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p>
+              Each PR should focus on the changes introduced by its own layer. The lower PRs are
+              dependencies for the layers above them.
+            </p>
+          </section>
+
+          <section class="guide-section" id="merge-sync">
+            <h2>
+              <span class="step-marker" aria-hidden="true">9</span>
+              <span class="step-title">Merge and sync</span>
+            </h2>
+            <p>
+              Review and merge from the bottom of the stack upward. After a lower PR is merged, use
+              your extension's documented sync/rebase workflow to update the remaining branches. Some
+              implementations provide a command such as:
+            </p>
+            <div class="code-block">
+              <div class="code-block__label">
+                <span>Terminal</span>
+                <button type="button" class="code-block__copy">Copy</button>
+              </div>
+              <pre><code>gh stack sync</code></pre>
+            </div>
+            <p>Verify its behavior with the extension's help before running it.</p>
+          </section>
+
+          <section class="guide-section guide-section--unnumbered" id="best-practices">
+            <h2 class="practices-heading">
+              <span class="practices-heading__icon" aria-hidden="true">
+                <svg viewBox="0 0 16 16" width="22" height="22" fill="currentColor">
+                  <path
+                    d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0Zm-1.5 0a6.5 6.5 0 1 0-13 0 6.5 6.5 0 0 0 13 0Zm-3.28-2.03a.75.75 0 0 0-1.06-1.06L6.97 9.03l-1.47-1.47a.75.75 0 0 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l3.72-3.72Z"
+                  />
+                </svg>
+              </span>
+              Best practices
+            </h2>
+            <div class="practices-panel">
+            <ul class="checklist">
+              <li>Keep each PR focused on one logical change.</li>
+              <li>Create new branches from the top of the current stack.</li>
+              <li>Review and merge from the bottom upward.</li>
+              <li>Rebase dependent branches when a lower layer changes.</li>
+              <li>Use your stack extension's submit/sync workflow to keep PR base branches correct.</li>
+              <li>
+                Check <code>gh stack --help</code> because <code>gh stack</code> commands depend on
+                the extension installed.
+              </li>
+            </ul>
+            <p class="goal-card">
+              <strong>Goal:</strong> smaller PRs, faster reviews, less context switching, and easier
+              collaboration.
+            </p>
+            </div>
+          </section>
+
+          <p class="footer-note">
+            Source repository:
+            <a href="https://github.com/kristapsstrazds94/gh-stacked-prs">kristapsstrazds94/gh-stacked-prs</a>
+          </p>
+        </article>
+      </main>
+    </div>
+
+    <nav class="mobile-guide-bar" aria-label="Current section" aria-live="polite">
+      <span class="mobile-guide-bar__step" id="mobile-step">-</span>
+      <span class="mobile-guide-bar__label" id="mobile-label">Scroll to begin</span>
+      <button type="button" class="mobile-guide-bar__open" aria-controls="sidebar">
+        Steps
+      </button>
+    </nav>
+
+    <div class="lightbox" id="lightbox" hidden>
+      <div class="lightbox__backdrop" data-lightbox-close tabindex="-1"></div>
+      <div
+        class="lightbox__dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="lightbox-caption"
+      >
+        <button type="button" class="lightbox__close" data-lightbox-close aria-label="Close">
+          Close
+        </button>
+        <img class="lightbox__img" id="lightbox-img" alt="" decoding="async" />
+        <p class="lightbox__caption" id="lightbox-caption"></p>
+      </div>
+    </div>
+
+    <script src="js/guide.js" defer></script>
+  </body>
+</html>
