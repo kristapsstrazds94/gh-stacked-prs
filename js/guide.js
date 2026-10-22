@@ -29,10 +29,39 @@
   });
 
   let scrollLockUntil = 0;
+  let pageScrollY = 0;
+  let scrollLockCount = 0;
+
+  function lockPageScroll() {
+    if (scrollLockCount === 0) {
+      pageScrollY = window.scrollY || window.pageYOffset || 0;
+      document.body.style.top = "-" + pageScrollY + "px";
+      document.body.classList.add("scroll-locked");
+    }
+    scrollLockCount += 1;
+  }
+
+  function unlockPageScroll() {
+    if (scrollLockCount === 0) {
+      return;
+    }
+    scrollLockCount -= 1;
+    if (scrollLockCount > 0) {
+      return;
+    }
+    document.body.classList.remove("scroll-locked");
+    document.body.style.top = "";
+    window.scrollTo(0, pageScrollY);
+  }
 
   function setActiveLink(id) {
     navLinks.forEach(function (link) {
-      link.classList.toggle("is-active", Boolean(id) && link.getAttribute("href") === "#" + id);
+      var isActive = Boolean(id) && link.getAttribute("href") === "#" + id;
+      link.classList.toggle("is-active", isActive);
+      var item = link.closest(".toc-item");
+      if (item) {
+        item.classList.toggle("is-active", isActive);
+      }
     });
     updateMobileBar(id);
   }
@@ -99,14 +128,18 @@
   function openSidebar() {
     sidebar?.classList.add("is-open");
     backdrop?.classList.add("is-visible");
-    document.body.classList.add("sidebar-open");
+    sidebar?.setAttribute("aria-hidden", "false");
+    backdrop?.setAttribute("aria-hidden", "false");
+    lockPageScroll();
     toggle?.setAttribute("aria-expanded", "true");
   }
 
   function closeSidebar() {
     sidebar?.classList.remove("is-open");
     backdrop?.classList.remove("is-visible");
-    document.body.classList.remove("sidebar-open");
+    sidebar?.setAttribute("aria-hidden", "true");
+    backdrop?.setAttribute("aria-hidden", "true");
+    unlockPageScroll();
     toggle?.setAttribute("aria-expanded", "false");
   }
 
@@ -121,6 +154,42 @@
   toggle?.addEventListener("click", toggleSidebar);
   mobileOpen?.addEventListener("click", openSidebar);
   backdrop?.addEventListener("click", closeSidebar);
+  backdrop?.addEventListener(
+    "touchend",
+    function (event) {
+      if (!sidebar?.classList.contains("is-open")) {
+        return;
+      }
+      event.preventDefault();
+      closeSidebar();
+    },
+    { passive: false }
+  );
+
+  var mobileViewportMq = window.matchMedia("(max-width: 1023px)");
+
+  function syncSidebarForViewport() {
+    if (!sidebar) {
+      return;
+    }
+    if (!mobileViewportMq.matches) {
+      sidebar.removeAttribute("aria-hidden");
+      if (sidebar.classList.contains("is-open")) {
+        closeSidebar();
+      }
+      return;
+    }
+    if (!sidebar.classList.contains("is-open")) {
+      sidebar.setAttribute("aria-hidden", "true");
+    }
+  }
+
+  if (typeof mobileViewportMq.addEventListener === "function") {
+    mobileViewportMq.addEventListener("change", syncSidebarForViewport);
+  } else if (typeof mobileViewportMq.addListener === "function") {
+    mobileViewportMq.addListener(syncSidebarForViewport);
+  }
+  syncSidebarForViewport();
 
   navLinks.forEach(function (link) {
     link.addEventListener("click", function (event) {
@@ -180,7 +249,7 @@
       lightboxCaption.textContent = captionText || "";
     }
     lightbox.hidden = false;
-    document.body.classList.add("lightbox-open");
+    lockPageScroll();
     lightbox.querySelector(".lightbox__close")?.focus();
   }
 
@@ -190,7 +259,7 @@
     }
     lightbox.hidden = true;
     lightboxImg.removeAttribute("src");
-    document.body.classList.remove("lightbox-open");
+    unlockPageScroll();
     if (lightboxLastFocus && typeof lightboxLastFocus.focus === "function") {
       lightboxLastFocus.focus();
     }
@@ -211,10 +280,18 @@
   });
 
   document.addEventListener("keydown", function (event) {
-    if (event.key === "Escape" && lightbox && !lightbox.hidden) {
+    if (event.key !== "Escape") {
+      return;
+    }
+    if (lightbox && !lightbox.hidden) {
       closeLightbox();
+      return;
+    }
+    if (sidebar?.classList.contains("is-open")) {
+      closeSidebar();
     }
   });
+
 
   document.querySelectorAll(".code-block").forEach(function (block) {
     var button = block.querySelector(".code-block__copy");
